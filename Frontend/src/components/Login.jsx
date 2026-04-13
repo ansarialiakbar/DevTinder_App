@@ -8,6 +8,7 @@ import { API_BASE_URL } from "../utils/constants";
 const Login = () => {
     const [email, setEmail] = useState("asfar1234@gmail.com");
     const [password, setPassword] = useState("@12345");
+    const [error, setError] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -15,15 +16,15 @@ const Login = () => {
        // Implement login logic here
        try {
          // Example: Send login request to the backend
-         const response = await axios.post(`${API_BASE_URL}/login`, { email, password }
+         const res = await axios.post(`${API_BASE_URL}/login`, { email, password }
             , { withCredentials: true } 
          );
-         dispatch(addUser(response.data));
+         dispatch(addUser(res.data));
           navigate("/");
-         console.log("Login successful", response.data);
+         console.log("Login successful", res.data);
          
        } catch (error) {
-         console.error("Login failed", error);
+          setError(error?.response?.data || "Login failed");
          
        }
     }
@@ -60,6 +61,7 @@ const Login = () => {
               />
           </label>      
        </div>
+         <p className="text-red-500">{error}</p>
          <div className="card-actions justify-center m-2">
             <button className="bg-primary text-white px-4 py-2 rounded" onClick={handleLogin}>
               Login
