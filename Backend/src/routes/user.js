@@ -4,6 +4,8 @@ const { userAuth } = require('../middlewares/auth');
 const { ConnectionRequestModel } = require('../models/connectionRequest');
 const User = require('../models/user');
 
+const USER_SAFE_DATA = "firstName lastName photoUrl age gender about skills";
+
 // Get all the pending connection request for the loggedIn user
 userRouter.get('/user/pending/request', userAuth, async(req, res) => {
     try {
@@ -11,14 +13,14 @@ userRouter.get('/user/pending/request', userAuth, async(req, res) => {
         const connectionRequests = await ConnectionRequestModel.find({
             toUserId: loggedInUser._id,
             status: "interested"
-        }).populate('fromUserId', ["firstName", "lastName"]);
+        }).populate('fromUserId', USER_SAFE_DATA);
         res.status(200).json({ success: true, data: connectionRequests });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
 })
 
-userRouter.get('/user/connection', userAuth, async(req, res) => {
+userRouter.get('/user/connections', userAuth, async(req, res) => {
     try {
         const loggedInUser = req.user;
         const connectionRequests = await ConnectionRequestModel.find({
@@ -26,8 +28,8 @@ userRouter.get('/user/connection', userAuth, async(req, res) => {
                 { toUserId: loggedInUser._id, status: "accepted"},
                 {fromUserId: loggedInUser._id, status: "accepted"}
             ]
-        }).populate('fromUserId', ["firstName", "lastName", "age", "skills"])
-        .populate('toUserId', ["firstName", "lastName", "age", "skills"])
+        }).populate('fromUserId', USER_SAFE_DATA)
+        .populate('toUserId', USER_SAFE_DATA)
 
         const data = connectionRequests.map((row) => {
             if(row.fromUserId._id.toString() === loggedInUser._id.toString()){
@@ -47,14 +49,15 @@ userRouter.get('/user/feed', userAuth, async(req, res) => {
     try {
         const loggedInUser = req.user;
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || 15;
+        console.log("page:", page, "limit:", limit);
         const skip = (page - 1) * limit;
 
         const connectionRequests = await ConnectionRequestModel.find({
             $or: [
                 {fromUserId: loggedInUser._id},
                 {toUserId: loggedInUser._id},
-                {fromUserId: loggedInUser._id, toUserId: loggedInUser._id},      
+                     
             ]
         })
         const excludesUserIds = connectionRequests.reduce((acc, curr) => {
@@ -72,7 +75,7 @@ userRouter.get('/user/feed', userAuth, async(req, res) => {
             {_id: {$nin: excludesUserIds}}
            ]
 
-        }).select("firstName lastName").skip(skip).limit(limit);
+        }).select(USER_SAFE_DATA).skip(skip).limit(limit);
         res.status(200).json({message: "Feed fetched successfully", data: users});
         
     } catch (error) {

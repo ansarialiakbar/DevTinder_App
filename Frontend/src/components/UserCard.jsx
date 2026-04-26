@@ -6,7 +6,7 @@ const UserCard = ({ user }) => {
   <figure>
     <img
       
-      src={photoUrl || "https://i.pinimg.com/videos/thumbnails/originals/98/24/e7/9824e748a0f2d32104ae51840ea719dd.0000000.jpg"}
+      src={photoUrl || "https://m.media-amazon.com/images/M/MV5BMzkwYTAzMDMtMzBlMC00NDEwLTg2YjAtM2ZhMzg2M2Y2N2M3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"}
       alt="Shoes" />
   </figure>
   <div className="card-body">

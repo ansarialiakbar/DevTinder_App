@@ -6,15 +6,15 @@ const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
-        minLength: 4,
+        minLength: 2,
         maxLength: 50,
 
     },
     lastName: {
         type: String,
         required: true,
-        minLength: 3,
-        maxlength: 50
+        minLength: 2,
+        maxLength: 50
     },
     email:{
         type: String,
@@ -61,6 +61,15 @@ const userSchema = new mongoose.Schema({
                 throw new Error('Atleast 2 skills are required');
             }
          }
+    },
+     photoUrl: {
+      type: String,
+      default: "https://www.shutterstock.com/image-illustration/missile-man-india-dr-apj-600nw-2310268025.jpg",
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error("Invalid Photo URL: " + value);
+        }
+      },
     },
     about: {
         type: String,

@@ -12,7 +12,7 @@ authRouter.post('/signup', async (req, res) => {
     
     try {
         valiadteSignupData(req);
-        const {firstName, lastName, email, password, age, gender, skills} = req.body;
+        const {firstName, lastName, email, password, age, gender, skills, photoUrl, about} = req.body;
         //Encryption of password
         const passwordHash = await bcrypt.hash(password, 10);
         console.log(passwordHash);
@@ -24,7 +24,10 @@ authRouter.post('/signup', async (req, res) => {
             password: passwordHash,
             age,
             gender,
-            skills
+            skills,
+            photoUrl: req.body.photoUrl || "https://www.shutterstock.com/image-illustration/missile-man-india-dr-apj-600nw-2310268025.jpg",
+            about
+
         })
         console.log(user?.firstName);
         
@@ -49,11 +52,11 @@ authRouter.post('/login', async (req, res) => {
             // Generating a JWT token for authentication
             const token = await user.getJWTToken ();
             res.cookie("token", token);
-            res.send("Login Successfull");    
+            res.send(user);    
         }
         
     } catch (error) {
-        res.status(500).json({ message: "Error in Login", error: error.message})
+        res.status(401).send(" Error: " + error.message)
         
     }
 })
