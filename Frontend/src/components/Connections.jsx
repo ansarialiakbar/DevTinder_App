@@ -29,7 +29,7 @@ const Connections = () => {
 
     return (
         <div className="flex flex-col items-center  h-screen">
-            <h1 className="text-3xl font-bold mb-4">Connections</h1>
+            <h1 className="text-3xl text-center text-yellow-500 cursor-pointer hover:text-yellow-700 font-bold mb-4">Connections</h1>
             <p className="text-gray-600">Here you can see your matches and connections.</p>
             {connections.map((connection) => {
                 const {firstName, lastName, photoUrl, about, age, gender} = connection;

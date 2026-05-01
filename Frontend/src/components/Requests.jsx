@@ -34,7 +34,7 @@ const Requests = () => {
 
     return (
         <div className="flex flex-col items-center  h-screen">
-            <h1 className="text-3xl font-bold mb-4">Connection Requests</h1>
+            <h1 className="text-3xl text-center  text-yellow-500 cursor-pointer hover:text-yellow-700  font-bold mb-4">Connection Requests</h1>
             <p className="text-gray-600">Here you can see your pending requests.</p>
             {requests.map((request) => {
                 const {firstName, lastName, photoUrl, about, age, gender} = request.fromUserId;
