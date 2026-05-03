@@ -2,7 +2,7 @@
 const validator = require('validator');
 
 const valiadteSignupData = (req) => {
-    const {firstName, lastName, email, password, age, gender, skills} = req.body;
+    const {firstName, lastName, email, password} = req.body;
     console.log(firstName);
     
     if(!validator.isEmail(email)) {

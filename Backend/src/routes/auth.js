@@ -12,7 +12,7 @@ authRouter.post('/signup', async (req, res) => {
     
     try {
         valiadteSignupData(req);
-        const {firstName, lastName, email, password, age, gender, skills, photoUrl, about} = req.body;
+        const {firstName, lastName, email, password} = req.body;
         //Encryption of password
         const passwordHash = await bcrypt.hash(password, 10);
         console.log(passwordHash);
@@ -21,12 +21,12 @@ authRouter.post('/signup', async (req, res) => {
             firstName,
             lastName,
             email,
-            password: passwordHash,
-            age,
-            gender,
-            skills,
-            photoUrl: req.body.photoUrl || "https://www.shutterstock.com/image-illustration/missile-man-india-dr-apj-600nw-2310268025.jpg",
-            about
+            password: passwordHash
+            // age,
+            // gender,
+            // skills,
+            // photoUrl: req.body.photoUrl || "https://www.shutterstock.com/image-illustration/missile-man-india-dr-apj-600nw-2310268025.jpg",
+            // about
 
         })
         console.log(user?.firstName);
